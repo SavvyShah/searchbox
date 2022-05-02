@@ -199,3 +199,16 @@ li.page-item.active > a {
   color: white;
   border-color: #007bff;
 }
+.searchbox > .suggestions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.index-suggestions {
+  grid-column: 1;
+  grid-row: 1;
+}
+.category-suggestions {
+  grid-column: 1;
+  grid-row: 2;
+}
