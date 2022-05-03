@@ -6,58 +6,58 @@ import './styles.css';
 const App = () => {
   return (
     <div>
-      <SearchBox id="search" autosuggest={false} />
-      <SearchComponent
-        id="results"
-        react={{ and: ['search'] }}
+      <SearchBox
+        id="search"
         aggregationField="genres_data.keyword"
+        size={5}
+        aggregationSize={5}
         enablePopularSuggestions
-      >
-        {({ results, loading, query }) => {
+        render={({ data, value, loading, rawData }) => {
           const key = 'genres_data.keyword';
-          const searchQuery = query && query[1];
-          console.log({ results });
-          if (!searchQuery) {
-            return null;
-          }
-          if (loading) {
-            return <div className="display">Loading</div>;
-          }
+          if (!value || loading) return null;
           return (
             <div className="result">
               <div className="resultSuggestion list">
                 <div className="listHead">Suggestions</div>
                 <div className="listBody">
-                  {results.data.map(res => (
-                    <div className="suggestion">
-                      <div>{res.original_title}</div>
-                    </div>
-                  ))}
+                  {data
+                    .filter(res => res._suggestion_type === 'index')
+                    .map(res => (
+                      <div className="suggestion">
+                        <div>{res.original_title}</div>
+                      </div>
+                    ))}
                 </div>
               </div>
               <div className="resultCategory list">
                 <div className="listHead">Genres</div>
                 <div className="listBody">
-                  {results.raw &&
-                    results.raw.aggregations[key].buckets.map(res => (
+                  {rawData.aggregations &&
+                    rawData.aggregations[key].buckets.map(res => (
                       <div>{res.key[key]}</div>
                     ))}
                 </div>
               </div>
               <div className="resultPopular list">
-                <div className="listHead">Popular in "{searchQuery.value}"</div>
+                <div className="listHead">Popular in "{value}"</div>
                 <div className="listBody">
-                  {results.data.map(res => (
-                    <div className="suggestion">
-                      <div>{res.original_title}</div>
-                    </div>
-                  ))}
+                  {data
+                    .filter(
+                      res =>
+                        res._suggestion_type === 'popular' &&
+                        res.indices.includes('movies-store-app')
+                    )
+                    .map(res => (
+                      <div className="suggestion">
+                        <div>{res.value}</div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
           );
         }}
-      </SearchComponent>
+      />
     </div>
   );
 };
