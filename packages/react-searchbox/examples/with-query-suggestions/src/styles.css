@@ -199,10 +199,14 @@ li.page-item.active > a {
   color: white;
   border-color: #007bff;
 }
+.page {
+  padding: 1rem;
+}
 .result {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  gap: 1rem;
   padding: 1rem;
 }
 .resultSuggestion {
@@ -212,7 +216,6 @@ li.page-item.active > a {
 .resultCategory {
   grid-column: 1;
   grid-row: 2;
-  margin-top: 1rem;
 }
 .resultPopular {
   grid-area: 1 / 2 / 3 / 3;
